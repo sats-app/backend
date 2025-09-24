@@ -15,19 +15,10 @@ const backend = defineBackend({
 // Override Cognito UserPool for passwordless authentication
 const { cfnUserPool, cfnUserPoolClient } = backend.auth.resources.cfnResources;
 
-// Enable advanced security features for email OTP
+// Enable advanced security features
 cfnUserPool.userPoolAddOns = {
-  advancedSecurityMode: 'ENFORCED',
+  advancedSecurityMode: 'AUDIT',
 };
-
-// Configure passwordless authentication methods
-cfnUserPool.addPropertyOverride(
-  'Policies.SignInPolicy.AllowedFirstAuthFactors',
-  ['EMAIL_OTP', 'PASSWORD']
-);
-
-// Enable EMAIL_OTP in MFA options
-cfnUserPool.enabledMfas = [...(cfnUserPool.enabledMfas || []), 'EMAIL_OTP'];
 
 // Configure auth flows for passwordless
 cfnUserPoolClient.explicitAuthFlows = [
@@ -37,15 +28,8 @@ cfnUserPoolClient.explicitAuthFlows = [
   'ALLOW_USER_SRP_AUTH',
 ];
 
-// Set auth flow configuration
-cfnUserPoolClient.authFlows = {
-  userAuth: true,
-  userSrp: true,
-};
-
 // Configure email verification
 cfnUserPool.autoVerifiedAttributes = ['email'];
-cfnUserPool.aliasAttributes = ['email', 'preferred_username'];
 
 // Configure password policy for backup auth method
 cfnUserPool.policies = {
@@ -57,14 +41,4 @@ cfnUserPool.policies = {
     requireUppercase: true,
     temporaryPasswordValidityDays: 7,
   },
-};
-
-// Configure account recovery
-cfnUserPool.accountRecoverySetting = {
-  recoveryMechanisms: [
-    {
-      name: 'verified_email',
-      priority: 1,
-    },
-  ],
 };

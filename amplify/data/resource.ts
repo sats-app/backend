@@ -13,6 +13,7 @@ const schema = a.schema({
       quoteId: a.string().required(),
       encryptedQuote: a.string().required(), // Encrypted quote data including all sensitive fields
       state: a.enum(['UNPAID', 'PAID', 'ISSUED']),
+      owner: a.string().authorization((allow) => [allow.owner().to(['read', 'delete'])]),
       createdAt: a.datetime().default(new Date().toISOString()),
       updatedAt: a.datetime(),
     })
@@ -27,6 +28,7 @@ const schema = a.schema({
       quoteId: a.string().required(),
       encryptedQuote: a.string().required(), // Encrypted quote data including all sensitive fields
       state: a.enum(['UNPAID', 'PAID', 'PENDING', 'UNKNOWN', 'FAILED']),
+      owner: a.string().authorization((allow) => [allow.owner().to(['read', 'delete'])]),
       createdAt: a.datetime().default(new Date().toISOString()),
       updatedAt: a.datetime(),
     })
@@ -41,6 +43,7 @@ const schema = a.schema({
       proofId: a.string().required(), // Unique identifier for the proof
       encryptedProof: a.string().required(), // Encrypted proof data including all sensitive fields
       state: a.enum(['SPENT', 'UNSPENT', 'PENDING', 'RESERVED', 'PENDING_SPENT']),
+      owner: a.string().authorization((allow) => [allow.owner().to(['read', 'delete'])]),
       createdAt: a.datetime().default(new Date().toISOString()),
       updatedAt: a.datetime(),
     })
@@ -54,6 +57,7 @@ const schema = a.schema({
     .model({
       transactionId: a.string().required(),
       encryptedTransaction: a.string().required(), // Encrypted transaction data including all details
+      owner: a.string().authorization((allow) => [allow.owner().to(['read', 'delete'])]),
       createdAt: a.datetime().default(new Date().toISOString()),
       updatedAt: a.datetime(),
     })
@@ -64,6 +68,7 @@ const schema = a.schema({
     .model({
       mintUrls: a.string().array(), // Array of mint URLs
       defaultMintUrl: a.string(),
+      owner: a.string().authorization((allow) => [allow.owner().to(['read', 'delete'])]),
       createdAt: a.datetime().default(new Date().toISOString()),
       updatedAt: a.datetime(),
     })

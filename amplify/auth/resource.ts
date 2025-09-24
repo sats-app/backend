@@ -10,8 +10,7 @@ export const auth = defineAuth({
     email: {
       verificationEmailStyle: 'CODE',
       verificationEmailSubject: 'Your Sats App verification code',
-      verificationEmailBody: (code) =>
-        `Your Sats App verification code is: ${code}. This code expires in 10 minutes.`,
+      verificationEmailBody: (createCode) => `Your Sats App verification code is: ${createCode()}. This code expires in 10 minutes.`,
     },
   },
   userAttributes: {
@@ -24,16 +23,7 @@ export const auth = defineAuth({
       mutable: true,
     },
   },
-  accountRecovery: 'EMAIL_ONLY',
   multifactor: {
-    mode: 'OPTIONAL',
-    totp: false,
-    sms: false,
-  },
-  senders: {
-    email: {
-      fromEmail: 'noreply@paywithsats.app',
-      fromName: 'Sats App',
-    },
+    mode: 'OFF',
   },
 });
