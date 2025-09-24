@@ -14,6 +14,27 @@ Sats App - A mobile wallet application backend implementing passwordless authent
 - AWS Cognito (passwordless authentication with email OTP)
 - AWS AppSync (GraphQL data layer with encrypted storage)
 
+## Repository Structure
+
+```
+backend/
+├── amplify/                     # Amplify backend configuration
+│   ├── backend.ts              # Main backend configuration with CDK overrides
+│   ├── auth/                   # Authentication resources
+│   │   └── resource.ts         # Passwordless auth configuration
+│   ├── data/                   # Data model resources
+│   │   └── resource.ts         # GraphQL schema with encrypted models
+│   ├── tsconfig.json           # TypeScript config for Amplify
+│   └── package.json            # Amplify package metadata
+├── node_modules/               # Dependencies (git-ignored)
+├── .amplify/                   # Generated Amplify resources (git-ignored)
+├── .claude/                    # Claude Code configuration
+├── .git/                       # Git repository
+├── .gitignore                  # Git ignore rules
+├── package.json                # Project dependencies and scripts
+├── package-lock.json           # Dependency lock file
+└── CLAUDE.md                   # This file
+
 ## Key Commands
 
 ### Development
@@ -45,11 +66,28 @@ npx ampx pipeline-deploy
 
 ## Architecture
 
-### Backend Structure (`amplify/`)
+### Backend Structure
 
-- **backend.ts**: Main backend configuration with CDK overrides for passwordless authentication (EMAIL_OTP, USER_AUTH flow)
-- **auth/resource.ts**: Passwordless authentication setup with email/username login, email OTP verification
-- **data/resource.ts**: WalletDatabase-compatible models with encrypted storage for sensitive data
+#### Main Configuration (`amplify/backend.ts`)
+- Defines backend resources (auth, data)
+- Configures CDK overrides for passwordless authentication
+- Enables USER_AUTH flow and EMAIL_OTP authentication
+- Sets up advanced security features and MFA options
+- Configures email verification and account recovery
+
+#### Authentication (`amplify/auth/resource.ts`)
+- Email-based login with OTP verification
+- Optional preferred username support
+- Custom email templates for verification codes
+- Email-only account recovery
+- Optional MFA configuration
+- Custom sender email configuration (`noreply@paywithsats.app`)
+
+#### Data Models (`amplify/data/resource.ts`)
+- WalletDatabase-compatible GraphQL schema
+- All models use owner-based authorization
+- Encrypted storage for all sensitive data
+- Secondary indexes for efficient state-based queries
 
 ### Authentication
 
@@ -124,6 +162,14 @@ const { data: unspentProofs } = await client.models.Proof.list({
 });
 ```
 
+## Important Files
+
+- **amplify/backend.ts**: Main backend configuration and CDK overrides
+- **amplify/auth/resource.ts**: Authentication setup
+- **amplify/data/resource.ts**: Data models and GraphQL schema
+- **package.json**: Project dependencies (Amplify CLI, AWS CDK, TypeScript)
+- **.gitignore**: Excludes generated files and sensitive data
+
 ## Notes
 
 - The `.amplify/` directory contains generated resources and should not be edited directly
@@ -131,3 +177,5 @@ const { data: unspentProofs } = await client.models.Proof.list({
 - Passwordless authentication requires configuring SES for email delivery
 - All sensitive wallet data (proofs, quotes, transactions) must be encrypted client-side before storage
 - The data model supports the CDK WalletDatabase trait for compatibility with Cashu wallet implementations
+- Project uses CommonJS modules (`"type": "commonjs"` in package.json)
+- TypeScript configured for ES2022 with bundler module resolution
