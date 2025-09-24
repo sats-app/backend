@@ -1,0 +1,71 @@
+# Amplify
+.amplify/
+amplify_outputs.json
+amplify_outputs.dart
+amplify_outputs.d.ts
+amplifyconfiguration.json
+amplifyconfiguration.dart
+amplify-backup/
+amplify/.temp
+amplify/backend/.temp
+amplify/backend/amplify-meta.json
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+
+# TypeScript
+*.tsbuildinfo
+.tsc-cache/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Logs
+logs/
+*.log
+
+# OS files
+Thumbs.db
+Desktop.ini
+
+# AWS
+.aws/
+aws-exports.js
+awsconfiguration.json
+
+# Temporary files
+*.tmp
+.temp/
+tmp/
+temp/
